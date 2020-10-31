@@ -24,12 +24,7 @@ let displayVideo = video => {
 
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
   .then(stream => {
-  
-    stream.getTracks().forEach(function(track) {
-      pc.addTrack(track, stream);
-    });
-
-    displayVideo(stream)
+    pc.addStream(displayVideo(stream))
     pc.createOffer().then(d => pc.setLocalDescription(d)).catch(log)
   }).catch(log)
 
@@ -56,11 +51,7 @@ window.startSession = () => {
 window.addDisplayCapture = () => {
   navigator.mediaDevices.getDisplayMedia().then(stream => {
     document.getElementById('displayCapture').disabled = true
-    
-    stream.getTracks().forEach(function(track) {
-     pc.addTrack(track, displayVideo(stream));
-    });
-  
+    pc.addStream(displayVideo(stream))
     pc.createOffer().then(d => pc.setLocalDescription(d)).catch(log)
   })
 }
